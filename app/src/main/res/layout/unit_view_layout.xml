@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        />
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:paddingStart="30dp"
+        android:layout_height="match_parent">
+        <Button
+            android:id="@+id/start_record"
+            android:text="开始录制"
+            android:layout_height="40dp"
+            android:layout_width="80dp"/>
+        <Button
+            android:id="@+id/stop_record"
+            android:text="停止录制"
+            android:layout_height="40dp"
+            android:layout_width="80dp"
+            android:layout_toRightOf="@+id/start_record"/>
+        <Button
+            android:id="@+id/start_play"
+            android:text="开始播放"
+            android:layout_height="40dp"
+            android:layout_width="80dp"
+            android:layout_below="@+id/start_record"/>
+        <Button
+            android:id="@+id/stop_play"
+            android:text="停止播放"
+            android:layout_height="40dp"
+            android:layout_width="80dp"
+            android:layout_toRightOf="@+id/start_play"
+            android:layout_below="@+id/stop_record"/>
+    </RelativeLayout>
+
+
+</LinearLayout>
