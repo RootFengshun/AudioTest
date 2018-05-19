@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.fengshun.audiotest.normal.AudioReceiver;
+import com.fengshun.audiotest.normal.AudioSender;
 import com.fengshun.audiotest.tester.AudioCaptureTester;
 import com.fengshun.audiotest.tester.AudioPlayerTester;
 import com.fengshun.audiotest.tester.Tester;
@@ -16,12 +18,16 @@ public class MainActivity extends AppCompatActivity {
 //        System.loadLibrary("native-lib");
 //    }
     private Tester mTester;
+    private AudioSender sender;
+    private AudioReceiver receiver;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sender = new AudioSender();
+        receiver = new AudioReceiver();
         UnitView pcmView =  (UnitView)findViewById(R.id.pcm_test);
         pcmView.setClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +54,27 @@ public class MainActivity extends AppCompatActivity {
 
 
         UnitView realtimeView = (UnitView) findViewById(R.id.realtime_test);
+        realtimeView.setClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("atom", "hhh");
+                switch (v.getId()) {
+                    case R.id.start_record:
+                        sender.startRecordAndroid();
+                        break;
+                    case R.id.stop_record:
+                        sender.stopRecord();
+                        break;
+                    case R.id.start_play:
+                        receiver.startPlay();
+
+                        break;
+                    case R.id.stop_play:
+                        receiver.stopPlay();
+                        break;
+                }
+            }
+        });
 
 
 
