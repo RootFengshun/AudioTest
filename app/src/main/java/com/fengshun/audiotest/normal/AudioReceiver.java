@@ -7,12 +7,11 @@ import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.util.Log;
 
+import com.fengshun.audiotest.MainActivity;
 import com.fengshun.audiotest.Utils.ArrayUtils;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 public class AudioReceiver {
     private boolean isRunning = false;
@@ -28,6 +27,7 @@ public class AudioReceiver {
                 isRunning = true;
                 int sampleRate = 8000;
                 int audioSource = MediaRecorder.AudioSource.MIC;
+                MainActivity.webRtcAgcInit(0, 255, 8000);
                 int min = AudioRecord.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
                 initSocket();
 
@@ -46,6 +46,7 @@ public class AudioReceiver {
                 mAudioTrack.play();
                 short []recordData = new short[2000];
                 byte[] recvData = new byte[4000];
+                short[] gainedData = new short[2000];
                 DatagramPacket recvPacket = new DatagramPacket(recvData, recvData.length);
                 try {
                     while (isRunning)
@@ -54,7 +55,10 @@ public class AudioReceiver {
                         socket.receive(recvPacket);
                         int num = recvPacket.getLength() / 2;
                         ArrayUtils.toShortArray(recvData, recordData);
-                        mAudioTrack.write(recordData, 0, num);
+
+                        MainActivity.webRtcAgcProcess(recordData, gainedData, num);
+
+                        mAudioTrack.write(gainedData, 0, num);
 
                     }
                     Log.e("atom","exit while");

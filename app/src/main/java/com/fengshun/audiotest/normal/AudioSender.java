@@ -1,9 +1,7 @@
 package com.fengshun.audiotest.normal;
 
 import android.media.AudioFormat;
-import android.media.AudioManager;
 import android.media.AudioRecord;
-import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.util.Log;
 
@@ -12,10 +10,8 @@ import com.fengshun.audiotest.Utils.ArrayUtils;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.Arrays;
 
 public class AudioSender {
     public boolean isRunning = false;
@@ -81,7 +77,6 @@ public class AudioSender {
                         }
                         ArrayUtils.toByteArray(recordData, sendData);
                         ByteBuffer.wrap(sendData).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().get(recordData);
-                        Log.e("fengshun", "num"+ Arrays.toString(sendData));
 
                         sendPacket = new DatagramPacket(sendData, num * 2, InetAddress.getByName("10.15.6.36"), 31000);
                         socket.send(sendPacket);

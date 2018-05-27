@@ -14,13 +14,25 @@ import com.fengshun.audiotest.tester.Tester;
 public class MainActivity extends AppCompatActivity {
 
     // Used to load the 'native-lib' library on application startup.
-//    static {
-//        System.loadLibrary("native-lib");
-//    }
+    static {
+        System.loadLibrary("native-lib");
+    }
     private Tester mTester;
     private AudioSender sender;
     private AudioReceiver receiver;
 
+    /**
+     * A native method that is implemented by the 'native-lib' native library,
+     * A native method that is implemented by the 'native-lib' native library,
+     * which is packaged with this application.
+     */
+    public static native String stringFromJNI();
+
+    public static native void webRtcAgcInit(long minVolume, long maxVolume, long freq);
+
+    public static native void webRtcAgcFree();
+
+    public static native void webRtcAgcProcess(short[] srcData, short[] desData, int srcLen);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sender = new AudioSender();
         receiver = new AudioReceiver();
-        UnitView pcmView =  (UnitView)findViewById(R.id.pcm_test);
+        UnitView pcmView = findViewById(R.id.pcm_test);
+        Log.e("atom", stringFromJNI());
         pcmView.setClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        UnitView realtimeView = (UnitView) findViewById(R.id.realtime_test);
+        UnitView realtimeView = findViewById(R.id.realtime_test);
         realtimeView.setClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.start_play:
                         receiver.startPlay();
-
                         break;
                     case R.id.stop_play:
                         receiver.stopPlay();
@@ -79,11 +91,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     * public native String stringFromJNI();
-     */
 
 }
